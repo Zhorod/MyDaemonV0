@@ -1,2 +1,2 @@
-# mydeamonV0
-test repository for the future MyDaemon project
+# MyDaemon
+Repository for the MyDaemon project
