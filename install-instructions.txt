@@ -1,0 +1,20 @@
+MyDaemonV0 installation instructions
+Updated 2nd APril 2020
+
+NodeServer
+This is a node JS script that runs a rest api server on the localhost:3000
+
+Open CMD as admin
+go to NodeServer directory
+npm install express
+
+NLPUtterance
+Contains a PyCharm workspace
+Open project in pycharm and select the folder
+Will require the NLTK toolkit and data to be installed. 
+NEED TO ADD COMMANDS
+
+
+
+
+
