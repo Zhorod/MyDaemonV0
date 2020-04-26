@@ -14,19 +14,21 @@ from nltk import pos_tag # for parts of speech
 from sklearn.metrics import pairwise_distances # to perform cosine similarity
 from nltk import word_tokenize # to create tokens
 from nltk.corpus import stopwords # for stop words
-from pathlib import Path
-from pathlib import Path, PureWindowsPath
+#from pathlib import Path
+#from pathlib import Path, PureWindowsPath
 import getopt
 import paho.mqtt.publish as publish
 
 def load_database():
     # read the question answer dataset
-    project_home = Path("")
-    if (project_home) not in sys.path:
-        sys.path = [project_home] + sys.path
+    #project_home = Path("")
+    #if (project_home) not in sys.path:
+    #    sys.path = [project_home] + sys.path
 
-    path_on_windows = PureWindowsPath(project_home / "MyDaemon-question-answer-db.csv")
-    dataset = pd.read_csv(path_on_windows)
+    #path_on_windows = PureWindowsPath(project_home / "md_qa_db.csv")
+    #dataset = pd.read_csv(path_on_windows)
+    dataset = pd.read_csv("md_qa_db.csv")
+
     dataset.head()
     # print(dataset) # print the data set
     # print(dataset.shape[0]) # print the number of rows
@@ -76,7 +78,7 @@ def stop_word(text):
     return " ".join(lema_word)
 
 
-class MyDaemonQA:
+class MyDaemonDB:
     def __init__(self):
         self.database = load_database()
 
@@ -122,10 +124,10 @@ class MyDaemonQA:
         index_value = distances.argmax()  # getting the index value
         return(str(self.database['Text Response'].loc[index_value]))
 
-MyDaemonQA_ = MyDaemonQA()
+MyDaemonDB_ = MyDaemonDB()
 
-def mydaemon_qa_get_response(input_text):
-    return(MyDaemonQA_.get_response(input_text))
+def md_db_get_response(input_text):
+    return(MyDaemonDB_.get_response(input_text))
 
 def main(argv):
     # get the question from the command line parameters
@@ -142,7 +144,7 @@ def main(argv):
             sys.exit()
         elif opt in ("-q"):
             question = arg
-    return (mydaemon_qa_get_response(question))
+    return (mydaemon_db_get_response(question))
 
 if __name__ == '__main__':
     answer = main(sys.argv[1:])

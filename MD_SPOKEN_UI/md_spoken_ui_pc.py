@@ -16,8 +16,8 @@ import sys
 from google.cloud.speech import enums
 from google.cloud.speech import types
 
-from mydaemon_cloudspeech_tts_pc import mydaemon_tts_speak
-from mydaemon_cloudspeech_stt_pc import mydaemon_stt_capture
+from md_tts_pc import md_tts_speak
+from md_stt_pc import md_stt_capture
 
 def on_connect(mqtt_client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
@@ -40,23 +40,22 @@ def on_message(mqtt_client, userdata, msg):
 
     # if the message topic is mydaemon
     if msg.topic == "mydaemon":
-        mydaemon_tts_speak(message_json["mydaemon"])
+        md_tts_speak(message_json["mydaemon"])
 
     # get the next input from the user
     while True:
-        utterance = mydaemon_stt_capture()
+        utterance = md_stt_capture()
         if utterance != None:
             # The utterance has data in it
             # Create a string which has a question and and space for an answer
-            qa_json = {"user": "", "mydaemon": ""}
-            qa_json["user"] = utterance
-            qa_string = json.dumps(qa_json)
+            message_json["user"] = utterance
+            message_string = json.dumps(message_json)
 
             # publish the JSON
-            mqtt_publish.single("user", qa_string, hostname="test.mosquitto.org")
+            mqtt_publish.single("user", message_string, hostname="test.mosquitto.org")
 
             # print the JSON
-            print("JSON published: ", qa_json)
+            print("JSON published: ", message_json)
 
             # If the user has said shutdown or shut down then exit
             if utterance.lower() == "shutdown" or utterance.lower() == "shut down":
@@ -73,13 +72,6 @@ def main():
     local_mqtt_client.connect("test.mosquitto.org", 1883, 60)
 
     while True:
-        # Publish the empty string to get the conversation going
-        qa_json = {"user": "", "mydaemon": ""}
-        qa_json["user"] = ""
-        qa_string = json.dumps(qa_json)
-
-        mqtt_publish.single("user", qa_string, hostname="test.mosquitto.org")
-
         # Loop the MQTT client
         local_mqtt_client.loop_forever()
 

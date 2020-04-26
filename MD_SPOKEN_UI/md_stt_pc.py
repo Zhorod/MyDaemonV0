@@ -10,7 +10,7 @@ from google.cloud.speech import types
 import pyaudio
 from six.moves import queue
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "./voice-assistant-246008-863f5e39dc2c.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "./voice-assistant-246008-3e3fe4524b82.json"
 
 # Audio recording parameters
 RATE = 16000
@@ -152,11 +152,11 @@ class MyDaemonSTT:
 
 MyDaemonSTT_ = MyDaemonSTT()
 
-def mydaemon_stt_capture():
+def md_stt_capture():
     return(MyDaemonSTT_.capture_utterance())
 
 def main():
-    print(mydaemon_stt_capture())
+    print(md_stt_capture())
 
 if __name__ == '__main__':
     main()
